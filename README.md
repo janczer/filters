@@ -36,8 +36,8 @@ Function gray get 2 parameters:
 def gray(img: BufferedImage, typ: String): BufferedImage
 ```
 
-- 'img' - Image object
-- 'typ' - type of filter gray (avarage, lightness, luminosity)
+- `img` - Image object
+- `typ` - type of filter gray (avarage, lightness, luminosity)
 
 ### Simple usage
 
