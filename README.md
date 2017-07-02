@@ -1,6 +1,10 @@
 # Image
 
-Repository with filter for image.
+Repository with filters for image.
+
+## Table of contents
+1. [Mirror image](#mirror-image)
+2. [Gray filter](#gray-filter)
 
 
 ## Mirror image
