@@ -5,6 +5,7 @@ Repository with filters for image.
 ## Table of contents
 1. [Mirror image](#mirror-image)
 2. [Gray filter](#gray-filter)
+3. [Sepia filter](#sepia-filter)
 
 
 ## Mirror image
@@ -27,7 +28,7 @@ $ cd filters
 $ scala mirror.scala
 ```
 
-And you have two files `test.jpg` and `mirror.jpg`.
+And you will have one file `mirror.jpg`.
 
 ![eagle](test.jpg)
 ![eagle](mirror.jpg)
@@ -51,8 +52,35 @@ $ cd filters
 $ scala gray.scala
 ```
 
-And you have two files `test.jpg` and `gray.jpg`.
+And you will have one file `gray.jpg`.
 
 ![eagle](test.jpg)
 ![eagle](gray.jpg)
+
+## Sepia filter
+
+Sepia filter work on gray scale images.
+
+Function sepia get 2 parameters:
+
+```
+def gray(img: BufferedImage, sp: Int): BufferedImage
+```
+
+- `img` - Image object
+- `sp` - factor of sepia effect (20-40)
+
+### Simple usage
+
+```
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ scala sepia.scala
+```
+
+And you will have one file `sepia.jpg`.
+
+![eagle](gray.jpg)
+![eagle](sepia.jpg)
+
 
