@@ -7,6 +7,7 @@ Repository with filters for image.
 2. [Gray filter](#gray-filter)
 3. [Sepia filter](#sepia-filter)
 4. [Inverse filter](#inverse-filter)
+5. [Split image to RGB channels](#split-image-to-rgb-channels)
 
 
 ## Mirror image
@@ -107,4 +108,30 @@ And you will have one file `inverse.jpg`.
 ![eagle](test.jpg)
 ![eagle](inverse.jpg)
 
+## Split image to RGB channels
 
+Function rgb get 3 parameters:
+
+```
+def rgb(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
+```
+
+- `img` - Image object
+- `r` - Show only red channel
+- `g` - Show only green channel
+- `b` - Show only blue channel
+
+### Simple usage
+
+```
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ scala rgb.scala
+```
+
+And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
+
+![eagle](test.jpg)
+![eagle](red.jpg)
+![eagle](green.jpg)
+![eagle](blue.jpg)
