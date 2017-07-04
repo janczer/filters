@@ -6,6 +6,7 @@ Repository with filters for image.
 1. [Mirror image](#mirror-image)
 2. [Gray filter](#gray-filter)
 3. [Sepia filter](#sepia-filter)
+4. [Inverse filter](#inverse-filter)
 
 
 ## Mirror image
@@ -82,5 +83,28 @@ And you will have one file `sepia.jpg`.
 
 ![eagle](gray.jpg)
 ![eagle](sepia.jpg)
+
+## Inverse filter
+
+Function inverse get 1 parameters:
+
+```
+def inverse(img: BufferedImage): BufferedImage
+```
+
+- `img` - Image object
+
+### Simple usage
+
+```
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ scala inverse.scala
+```
+
+And you will have one file `inverse.jpg`.
+
+![eagle](test.jpg)
+![eagle](inverse.jpg)
 
 
