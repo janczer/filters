@@ -8,6 +8,7 @@ Repository with filters for image.
 3. [Sepia filter](#sepia-filter)
 4. [Inverse filter](#inverse-filter)
 5. [Split image to RGB channels](#split-image-to-rgb-channels)
+6. [Color accent filter](#color-accent-filter)
 
 
 ## Mirror image
@@ -135,3 +136,28 @@ And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
 ![eagle](red.jpg)
 ![eagle](green.jpg)
 ![eagle](blue.jpg)
+
+## Color accent filter
+
+Function color_accent get 3 parameters:
+
+```
+def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage = {
+```
+
+- `img` - Image object
+- `hue` - Color in HSV
+- `range` - Range around color `hue`
+
+### Simple usage
+
+```
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ scala color_accent.scala
+```
+
+| Original | Hue = 0, Range = 50 | Hue = 70, Range = 50 | Hue = 200, Range = 50 |
+| -------- | ------------------- | -------------------- | --------------------- |
+| ![poppies](test2.jpg) | ![eagle](color_accent2.jpg) | ![eagle](color_accent1.jpg) | ![eagle](color_accent.jpg) |
+
