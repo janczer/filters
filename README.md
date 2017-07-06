@@ -89,7 +89,7 @@ And you will have one file `sepia.jpg`.
 
 ## Inverse filter
 
-Function inverse get 1 parameters:
+Function inverse get 1 parameter:
 
 ```
 def inverse(img: BufferedImage): BufferedImage
@@ -143,7 +143,7 @@ And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
 Function color_accent get 3 parameters:
 
 ```
-def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage = {
+def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage
 ```
 
 - `img` - Image object
@@ -167,7 +167,7 @@ $ scala color_accent.scala
 Function histogram get 1 parameter:
 
 ```
-def histogram(img: BufferedImage): BufferedImage = {
+def histogram(img: BufferedImage): BufferedImage
 ```
 
 - `img` - Image object
