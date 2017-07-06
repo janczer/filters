@@ -9,6 +9,7 @@ Repository with filters for image.
 4. [Inverse filter](#inverse-filter)
 5. [Split image to RGB channels](#split-image-to-rgb-channels)
 6. [Color accent filter](#color-accent-filter)
+7. [Histogram](#histogram)
 
 
 ## Mirror image
@@ -23,7 +24,7 @@ func mirror(img: BuffereImage, ox: Boolean, oy: Boolean): BuffereImage
 - `ox` - if `true` when image mirrored horizontally
 - `oy` - if `true` when image mirrored vertically
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -47,7 +48,7 @@ def gray(img: BufferedImage, typ: String): BufferedImage
 - `img` - Image object
 - `typ` - type of filter gray (avarage, lightness, luminosity)
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -73,7 +74,7 @@ def gray(img: BufferedImage, sp: Int): BufferedImage
 - `img` - Image object
 - `sp` - factor of sepia effect (20-40)
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -96,7 +97,7 @@ def inverse(img: BufferedImage): BufferedImage
 
 - `img` - Image object
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -122,7 +123,7 @@ def rgb(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
 - `g` - Show only green channel
 - `b` - Show only blue channel
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -149,7 +150,7 @@ def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage = {
 - `hue` - Color in HSV
 - `range` - Range around color `hue`
 
-### Simple usage
+#### Simple usage
 
 ```
 $ git clone https://github.com/janczer/filters
@@ -161,3 +162,26 @@ $ scala color_accent.scala
 | -------- | ------------------- | -------------------- | --------------------- |
 | ![poppies](test2.jpg) | ![eagle](color_accent2.jpg) | ![eagle](color_accent1.jpg) | ![eagle](color_accent.jpg) |
 
+## Histogram
+
+Function histogram get 1 parameter:
+
+```
+def histogram(img: BufferedImage): BufferedImage = {
+```
+
+- `img` - Image object
+
+#### Simple usage
+
+```
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ scala histogram.scala
+```
+
+| Original | Histogram |
+| -------- | ------------------- |
+| ![eagle](test.jpg) | ![eagle](histogram.jpg) |
+| ![poppies](test2.jpg) | ![eagle](histogram2.jpg) |
+| ![poppies gray](gray2.jpg) | ![eagle](histogram_gray.jpg) |
