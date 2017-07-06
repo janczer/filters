@@ -182,6 +182,6 @@ $ scala histogram.scala
 
 | Original | Histogram |
 | -------- | ------------------- |
-| ![eagle](test.jpg) | ![eagle](histogram.jpg) |
-| ![poppies](test2.jpg) | ![eagle](histogram2.jpg) |
-| ![poppies gray](gray2.jpg) | ![eagle](histogram_gray.jpg) |
+| ![eagle](test.jpg) | ![eagle](histogram.png) |
+| ![poppies](test2.jpg) | ![poppies](histogram2.png) |
+| ![poppies gray](gray2.jpg) | ![poppies](histogram_gray.png) |
