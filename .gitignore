@@ -1,1 +1,8 @@
 .idea
+target
+*.class
+*.iml
+*.ipr
+*.iws
+out
+.*.swp

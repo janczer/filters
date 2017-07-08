@@ -24,18 +24,10 @@ func mirror(img: BuffereImage, ox: Boolean, oy: Boolean): BuffereImage
 - `ox` - if `true` when image mirrored horizontally
 - `oy` - if `true` when image mirrored vertically
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala mirror.scala
-```
-
 And you will have one file `mirror.jpg`.
 
-![eagle](test.jpg)
-![eagle](mirror.jpg)
+![eagle](images/test.jpg)
+![eagle](images/mirror.jpg)
 
 ## Gray filter
 
@@ -48,18 +40,10 @@ def gray(img: BufferedImage, typ: String): BufferedImage
 - `img` - Image object
 - `typ` - type of filter gray (avarage, lightness, luminosity)
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala gray.scala
-```
-
 And you will have one file `gray.jpg`.
 
-![eagle](test.jpg)
-![eagle](gray.jpg)
+![eagle](images/test.jpg)
+![eagle](images/gray.jpg)
 
 ## Sepia filter
 
@@ -74,18 +58,10 @@ def gray(img: BufferedImage, sp: Int): BufferedImage
 - `img` - Image object
 - `sp` - factor of sepia effect (20-40)
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala sepia.scala
-```
-
 And you will have one file `sepia.jpg`.
 
-![eagle](gray.jpg)
-![eagle](sepia.jpg)
+![eagle](images/gray.jpg)
+![eagle](images/sepia.jpg)
 
 ## Inverse filter
 
@@ -97,18 +73,10 @@ def inverse(img: BufferedImage): BufferedImage
 
 - `img` - Image object
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala inverse.scala
-```
-
 And you will have one file `inverse.jpg`.
 
-![eagle](test.jpg)
-![eagle](inverse.jpg)
+![eagle](images/test.jpg)
+![eagle](images/inverse.jpg)
 
 ## Split image to RGB channels
 
@@ -123,20 +91,12 @@ def rgb(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
 - `g` - Show only green channel
 - `b` - Show only blue channel
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala rgb.scala
-```
-
 And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
 
-![eagle](test.jpg)
-![eagle](red.jpg)
-![eagle](green.jpg)
-![eagle](blue.jpg)
+![eagle](images/test.jpg)
+![eagle](images/red.jpg)
+![eagle](images/green.jpg)
+![eagle](images/blue.jpg)
 
 ## Color accent filter
 
@@ -150,17 +110,9 @@ def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage
 - `hue` - Color in HSV
 - `range` - Range around color `hue`
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala color_accent.scala
-```
-
 | Original | Hue = 0, Range = 50 | Hue = 70, Range = 50 | Hue = 200, Range = 50 |
 | -------- | ------------------- | -------------------- | --------------------- |
-| ![poppies](test2.jpg) | ![eagle](color_accent2.jpg) | ![eagle](color_accent1.jpg) | ![eagle](color_accent.jpg) |
+| ![poppies](images/test2.jpg) | ![eagle](images/color_accent2.jpg) | ![eagle](images/color_accent1.jpg) | ![eagle](images/color_accent.jpg) |
 
 ## Histogram
 
@@ -172,16 +124,8 @@ def histogram(img: BufferedImage): BufferedImage
 
 - `img` - Image object
 
-#### Simple usage
-
-```
-$ git clone https://github.com/janczer/filters
-$ cd filters
-$ scala histogram.scala
-```
-
 | Original | Histogram |
 | -------- | ------------------- |
-| ![eagle](test.jpg) | ![eagle](histogram.png) |
-| ![poppies](test2.jpg) | ![poppies](histogram2.png) |
-| ![poppies gray](gray2.jpg) | ![poppies](histogram_gray.png) |
+| ![eagle](images/test.jpg) | ![eagle](images/histogram.png) |
+| ![poppies](test2.jpg) | ![poppies](images/histogram2.png) |
+| ![poppies gray](images/gray2.jpg) | ![poppies](images/histogram_gray.png) |
