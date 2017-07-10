@@ -10,6 +10,8 @@ Repository with filters for image.
 5. [Split image to RGB channels](#split-image-to-rgb-channels)
 6. [Color accent filter](#color-accent-filter)
 7. [Histogram](#histogram)
+8. [Median filter](#median-filter)
+9. [Noise filter](#noise-filter)
 
 
 ## Mirror image
@@ -133,3 +135,33 @@ def histogram(img: BufferedImage, grid: Boolean): BufferedImage
 | ![eagle](images/test.jpg) | ![eagle](images/histogram.jpg) |
 | ![poppies](images/test2.jpg) | ![poppies](images/histogram2.jpg) |
 | ![poppies gray](images/gray2.jpg) | ![poppies](images/histogram_gray.jpg) |
+
+## Median filter
+
+Function median get 1 parameter:
+
+```
+def median(img: BufferedImage): BufferedImage
+```
+
+- `img` - Image object
+
+| Original | Histogram |
+| -------- | ------------------- |
+| ![poppies gray](images/noise.jpg) | ![poppies](images/median.jpg) |
+
+## Noise filter
+
+Function noise get 1 parameter:
+
+```
+def noise(img: BufferedImage): BufferedImage
+```
+
+- `img` - Image object
+
+| Original | Histogram |
+| -------- | ------------------- |
+| ![poppies gray](images/gray2.jpg) | ![poppies](images/noise.jpg) |
+
+

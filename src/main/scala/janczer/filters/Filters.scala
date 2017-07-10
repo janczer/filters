@@ -2,6 +2,8 @@ package janczer.filters
 
 import java.awt.{Color, RenderingHints}
 import java.awt.image.BufferedImage
+import scala.util.Sorting
+import scala.util.Random
 
 object Filters {
   def main(args: Array[String]) = {
@@ -244,6 +246,55 @@ object Filters {
     out
   }
 
+  def median(img: BufferedImage): BufferedImage = {
+    val w = img.getWidth
+    val h = img.getHeight
+
+    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+
+    for (x <- 1 until w - 1)
+      for (y <- 1 until h - 1) {
+
+        val matrix = new Array[Int](9)
+
+        var i = 0
+        for (xn <- x until x + 2)
+          for (yn <- y until y + 2) {
+            matrix(i) = img.getRGB(xn, yn) & 0xff
+            i += 1
+          }
+          
+        Sorting.quickSort(matrix)
+
+        val median = (matrix(5) * 65536) + (matrix(5) * 256) + matrix(5)
+            
+        out.setRGB(x, y, median.toInt & 0xffffff)
+      }
+
+    out
+  }
+
+  def noise(img: BufferedImage): BufferedImage = {
+    val w = img.getWidth
+    val h = img.getHeight
+
+    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+
+    for (x <- 0 until w)
+      for (y <- 0 until h) {
+        val r = Random
+        val n = r.nextFloat
+        if (n < 0.01) {
+          out.setRGB(x, y, 0xffffff)
+        } else {
+          out.setRGB(x, y, img.getRGB(x, y))
+        }
+      }
+
+
+    out
+  }
+
   def rgb2hsv(red: Int, green: Int, blue:Int) = {
     val r = red / 255f
     val g = green / 255f
@@ -270,3 +321,4 @@ object Filters {
     (h * 360f, s, v)
   }
 }
+
