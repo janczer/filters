@@ -235,8 +235,8 @@ object Filters {
         val green = (pixel & 0xff00) / 256 + sp
         val blue = pixel & 0xff
 
-        val redOut = if (red + 2 * sp > 255) 255 else red + 2 * sp
-        val greenOut = if (green + sp > 255) 255 else green + sp
+        val redOut = if (red > 255) 255 else red
+        val greenOut = if (green > 255) 255 else green
 
         val sepia = (redOut * 65536) + (greenOut * 256) + blue
 
