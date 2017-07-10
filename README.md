@@ -26,8 +26,9 @@ func mirror(img: BuffereImage, ox: Boolean, oy: Boolean): BuffereImage
 
 And you will have one file `mirror.jpg`.
 
-![eagle](images/test.jpg)
-![eagle](images/mirror.jpg)
+| Original | ox=true, oy = false | ox = false, oy = true| ox = true, oy = true |
+| -------- | ------------------- | -------------------- | -------------------- |
+| ![eagle](images/test.jpg) | ![eagle](images/mirror_ox.jpg)| ![eagle](images/mirror_oy.jpg)| ![eagle](images/mirror_all.jpg) |
 
 ## Gray filter
 
@@ -42,8 +43,9 @@ def gray(img: BufferedImage, typ: String): BufferedImage
 
 And you will have one file `gray.jpg`.
 
-![eagle](images/test.jpg)
-![eagle](images/gray.jpg)
+| Original | Avarage | Lightness | luminosity |
+| -------- | ------------------- | -------------------- | -------------------- |
+| ![eagle](images/test.jpg) | ![eagle](images/gray_ava.jpg) | ![eagle](images/gray_light.jpg) |![eagle](images/gray_lum.jpg) |  
 
 ## Sepia filter
 
@@ -60,8 +62,9 @@ def gray(img: BufferedImage, sp: Int): BufferedImage
 
 And you will have one file `sepia.jpg`.
 
-![eagle](images/gray.jpg)
-![eagle](images/sepia.jpg)
+| Original | Factor 20 | Factor 40|
+| -------- | ------------------- | -------------------- |
+| ![eagle](images/gray_ava.jpg) | ![eagle](images/sepia20.jpg) | ![eagle](images/sepia40.jpg) |
 
 ## Inverse filter
 
@@ -75,8 +78,9 @@ def inverse(img: BufferedImage): BufferedImage
 
 And you will have one file `inverse.jpg`.
 
-![eagle](images/test.jpg)
-![eagle](images/inverse.jpg)
+| Original | Inverse |
+| -------- | ------------------- |
+| ![eagle](images/test.jpg) | ![eagle](images/inverse.jpg) |
 
 ## Split image to RGB channels
 
@@ -93,10 +97,9 @@ def rgb(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
 
 And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
 
-![eagle](images/test.jpg)
-![eagle](images/red.jpg)
-![eagle](images/green.jpg)
-![eagle](images/blue.jpg)
+| Original | Only red | Only green | Only blue |
+| -------- | ------------------- | -------------------- | --------------------- |
+| ![eagle](images/test.jpg) | ![eagle](images/red.jpg) | ![eagle](images/green.jpg) | ![eagle](images/blue.jpg) |
 
 ## Color accent filter
 
@@ -127,5 +130,5 @@ def histogram(img: BufferedImage): BufferedImage
 | Original | Histogram |
 | -------- | ------------------- |
 | ![eagle](images/test.jpg) | ![eagle](images/histogram.png) |
-| ![poppies](test2.jpg) | ![poppies](images/histogram2.png) |
+| ![poppies](images/test2.jpg) | ![poppies](images/histogram2.png) |
 | ![poppies gray](images/gray2.jpg) | ![poppies](images/histogram_gray.png) |
