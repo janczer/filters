@@ -122,13 +122,14 @@ def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage
 Function histogram get 1 parameter:
 
 ```
-def histogram(img: BufferedImage): BufferedImage
+def histogram(img: BufferedImage, grid: Boolean): BufferedImage
 ```
 
 - `img` - Image object
+- `grid` - If true image will be have grid
 
 | Original | Histogram |
 | -------- | ------------------- |
-| ![eagle](images/test.jpg) | ![eagle](images/histogram.png) |
-| ![poppies](images/test2.jpg) | ![poppies](images/histogram2.png) |
-| ![poppies gray](images/gray2.jpg) | ![poppies](images/histogram_gray.png) |
+| ![eagle](images/test.jpg) | ![eagle](images/histogram.jpg) |
+| ![poppies](images/test2.jpg) | ![poppies](images/histogram2.jpg) |
+| ![poppies gray](images/gray2.jpg) | ![poppies](images/histogram_gray.jpg) |

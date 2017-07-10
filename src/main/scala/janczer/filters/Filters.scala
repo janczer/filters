@@ -88,7 +88,7 @@ object Filters {
     out
   }
 
-  def histogram(img: BufferedImage): BufferedImage = {
+  def histogram(img: BufferedImage, grid: Boolean): BufferedImage = {
     val w = img.getWidth
     val h = img.getHeight
 
@@ -113,14 +113,25 @@ object Filters {
     val maxx = Set(hRed.max, hGreen.max, hBlue.max).max
     val minn = Set(hRed.min, hGreen.min, hGreen.min).min
 
-    val width = 768
+    val height = 768
     val factor = 4
-    val out = new BufferedImage(256*factor, width, BufferedImage.TYPE_INT_RGB)
+    val width = 256*factor
+
+    val out = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g2d = out.createGraphics();
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON)
     g2d.setBackground(Color.WHITE)
     g2d.fillRect(0, 0, 256*factor, width)
+
+    //add grid
+    if (grid) {
+      g2d.setColor(Color.GRAY)
+      for (i <- 1 to 10) {
+        g2d.drawLine(width*i/10, 0, width*i/10, height)
+        g2d.drawLine(0, height*i/10, width, height*i/10)
+      }
+    }
 
     for (x <- 1 to 255) {
       val xFrom = x - 1
@@ -138,18 +149,18 @@ object Filters {
       //g2d.drawLine(x*factor, width, x*factor, forBlue.toInt)
 
       g2d.setColor(Color.RED)
-      val forRedFrom = width*(1 - hRed(xFrom)/hRed.max.toFloat)
-      val forRedTo = width*(1 - hRed(xTo)/hRed.max.toFloat)
+      val forRedFrom = height*(1 - hRed(xFrom)/hRed.max.toFloat)
+      val forRedTo = height*(1 - hRed(xTo)/hRed.max.toFloat)
       g2d.drawLine(xFrom*factor, forRedFrom.toInt, xTo*factor, forRedTo.toInt)
 
       g2d.setColor(Color.GREEN)
-      val forGreenFrom = width*(1 - hGreen(xFrom)/hGreen.max.toFloat)
-      val forGreenTo = width*(1 - hGreen(xTo)/hGreen.max.toFloat)
+      val forGreenFrom = height*(1 - hGreen(xFrom)/hGreen.max.toFloat)
+      val forGreenTo = height*(1 - hGreen(xTo)/hGreen.max.toFloat)
       g2d.drawLine(xFrom*factor, forGreenFrom.toInt, xTo*factor, forGreenTo.toInt)
 
-      g2d.setColor(Color.BLUE)
-      val forBlueFrom = width*(1 - hBlue(xFrom)/hBlue.max.toFloat)
-      val forBlueTo = width*(1 - hBlue(xTo)/hBlue.max.toFloat)
+      g2d.setColor(Color.BLACK)
+      val forBlueFrom = height*(1 - hBlue(xFrom)/hBlue.max.toFloat)
+      val forBlueTo = height*(1 - hBlue(xTo)/hBlue.max.toFloat)
       g2d.drawLine(xFrom*factor, forBlueFrom.toInt, xTo*factor, forBlueTo.toInt)
     }
 
