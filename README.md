@@ -4,6 +4,41 @@
 
 Repository with filters for image.
 
+## Simple usage
+
+First you should clone and compile the project.
+
+```Bash
+$ git clone https://github.com/janczer/filters
+$ cd filters
+$ sbt compile
+$ sbt package
+```
+
+After that you will have file `filters_2.12-X.X.jar` in `target/scala-2.12/`.
+
+Simple script for test this library:
+
+```Scala
+import janczer.filters.Filters
+import java.io.File
+import javax.imageio.ImageIO
+
+def test() {
+  val photoIn = ImageIO.read(new File("test.jpg"))
+
+  ImageIO.write(Filters.mirror(photoIn, true, true), "jpg", new File("mirror.jpg"))
+}
+
+test()
+```
+
+This is the way how you can run it:
+
+```Scala
+$ scala -classpath "filters_2.12-0.2.jar" test.scala
+```
+
 ## Table of contents
 1. [Mirror image](#mirror-image)
 2. [Gray filter](#gray-filter)
