@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/janczer/filters.svg?branch=master)](https://travis-ci.org/janczer/filters)
+
 # Image
 
 Repository with filters for image.
