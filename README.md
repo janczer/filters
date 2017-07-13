@@ -49,6 +49,7 @@ $ scala -classpath "filters_2.12-0.2.jar" test.scala
 7. [Histogram](#histogram)
 8. [Median filter](#median-filter)
 9. [Noise filter](#noise-filter)
+10. [Sort zig zag](#sort-zig-zag)
 
 
 ## Mirror image
@@ -202,3 +203,17 @@ def noise(img: BufferedImage): BufferedImage
 | ![poppies gray](images/gray2.jpg) | ![poppies](images/noise.jpg) |
 
 
+## Sort zig zag
+
+Function sort_zig_zag get 2 parameters:
+
+```
+def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage
+```
+
+- `img` - Image object
+- `gray` - if true then function transfor image to gray
+
+| Original | color | gray |
+| -------- | ------------------- | --- |
+| ![poppies gray](images/gray2.jpg) | ![poppies](images/zigzag_color.png) | ![poppies](images/zigzag_gray.png) |

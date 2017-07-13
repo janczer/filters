@@ -33,19 +33,7 @@ object Filters {
 
     for (x <- 0 until w)
       for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
-
-        val red = (pixel & 0xff0000) / 65536
-        val green = (pixel & 0xff00) / 256
-        val blue = pixel & 0xff
-
-        val mono = typ match {
-          case "avarage" => (red + green + blue)/3
-          case "lightness" => (Set(red, green, blue).max  + Set(red, green, blue).min)/2
-          case "luminosity" => (0.21*red + 0.72*green + 0.07*blue).toInt
-        }
-
-        val gray = (mono * 65536) + (mono * 256) + mono
+        val gray = color2gray(img.getRGB(x, y), typ)
 
         out.setRGB(x, y, gray.toInt & 0xffffff)
       }
@@ -293,6 +281,70 @@ object Filters {
 
 
     out
+  }
+
+  def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage = {
+    val w = img.getWidth
+    val h = img.getHeight
+
+    var a = new Array[Int](w*h)
+    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+
+
+    var i = 0
+    for (x <- 0 until w)
+      for (y <- 0 until h) {
+        a(i) = gray match {
+          case true => color2gray(img.getRGB(x, y), "avarage")
+          case false => img.getRGB(x, y)
+        }
+        i += 1
+      }
+
+    Sorting.quickSort(a)
+
+    i = 1
+    var j = 1
+
+    for (e <- 0 until w*h) {
+      out.setRGB(i-1, j-1, a(e))
+      if ((i + j) % 2 == 0) {
+        if (j < h)
+          j += 1
+        else
+          i += 2
+
+        if (i > 1)
+          i -= 1
+      } else {
+        
+        if (i < w)
+          i += 1
+        else
+          j += 2
+
+        if (j > 1)
+          j -= 1
+      }
+    }
+    
+    out
+  }
+
+  def color2gray(rgb: Int, typ: String):Int = {
+    val red = (rgb & 0xff0000) / 65536
+    val green = (rgb & 0xff00) / 256
+    val blue = rgb & 0xff
+
+    val mono = typ match {
+      case "avarage" => (red + green + blue)/3
+      case "lightness" => (Set(red, green, blue).max  + Set(red, green, blue).min)/2
+      case "luminosity" => (0.21*red + 0.72*green + 0.07*blue).toInt
+    }
+
+    val gray = (mono * 65536) + (mono * 256) + mono
+
+    gray
   }
 
   def rgb2hsv(red: Int, green: Int, blue:Int) = {
