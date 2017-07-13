@@ -205,6 +205,8 @@ def noise(img: BufferedImage): BufferedImage
 
 ## Sort zig zag
 
+More about this filter you can read on my [blog](https://janczer.github.io/zig-zag-filter/).
+
 Function sort_zig_zag get 2 parameters:
 
 ```
