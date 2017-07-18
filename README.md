@@ -184,7 +184,7 @@ def median(img: BufferedImage): BufferedImage
 
 - `img` - Image object
 
-| Original | Histogram |
+| Original | Median filter |
 | -------- | ------------------- |
 | ![poppies gray](images/noise.jpg) | ![poppies](images/median.jpg) |
 
@@ -198,7 +198,7 @@ def noise(img: BufferedImage): BufferedImage
 
 - `img` - Image object
 
-| Original | Histogram |
+| Original | Noise filter |
 | -------- | ------------------- |
 | ![poppies gray](images/gray2.jpg) | ![poppies](images/noise.jpg) |
 
