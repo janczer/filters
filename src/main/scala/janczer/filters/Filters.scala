@@ -9,96 +9,83 @@ object Filters {
   def main(args: Array[String]) = {
   }
 
-  def mirror(img: BufferedImage, ox: Boolean, oy: Boolean): BufferedImage = {
+  def mirror(img: BufferedImage, ox: Boolean, oy: Boolean): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => {
+      img.getRGB(
+        if (ox) img.getWidth - x - 1 else x,
+        if (oy) img.getHeight - y - 1 else y
+      )
+    })
+
+  def gray(img: BufferedImage, typ: String): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => color2gray(img.getRGB(x, y), typ))
+
+  def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => {
+      val pixel = img.getRGB(x, y)
+
+      val (h, sat, l) = rgb2hsv_pixel(pixel)
+
+      val (h1, h2) = {
+        (360 - range/2, range/2)
+      }
+
+      val h_normal = (h - hue + 360) % 360
+
+      if (h_normal >= h2 && h_normal <= h1) {
+        mono_color(pixel)
+      } else {
+        pixel
+      }
+    })
+
+  def buffered_image_with_pixels(img: BufferedImage, fx : (Int, Int) => Int) : BufferedImage = {
     val w = img.getWidth
     val h = img.getHeight
-
     val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
 
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val wOut = if (ox) w - x - 1 else x
-        val hOut = if (oy) h - y - 1 else y
-        out.setRGB(x, y, img.getRGB(wOut, hOut) & 0xffffff)
-      }
+    (0 until w).foreach( x => {
+      (0 until h).foreach( y => {
+        out.setRGB(x, y, fx(x, y))
+      })
+    })
 
     out
   }
 
-  def gray(img: BufferedImage, typ: String): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val gray = color2gray(img.getRGB(x, y), typ)
-
-        out.setRGB(x, y, gray.toInt & 0xffffff)
-      }
-
-    out
+  def rgb2hsv_pixel(pixel: Int): (Float, Float, Float) = rgb2hsv(red_channel(pixel), green_channel(pixel), blue_channel(pixel))
+  def red_channel(pixel: Int): Int = (pixel & 0xff0000) / 0x10000
+  def green_channel(pixel: Int): Int = (pixel & 0xff00) / 0x100
+  def blue_channel(pixel: Int): Int = (pixel & 0xff)
+  def all_channels(red: Int, green: Int, blue: Int) : Int =
+    ((normalize_pixel(red) * 0x10000) +
+      (normalize_pixel(green) * 0x100) +
+      normalize_pixel(blue)).toInt & 0xffffff
+  def mono_color(pixel: Int) : Int = {
+    val mono = (0.21 * red_channel(pixel) + 0.72 * green_channel(pixel) + 0.07 * blue_channel(pixel)).toInt
+    (mono * 0x10000) + (mono * 0x100) + mono
   }
-
-  def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
-
-        val red = (pixel & 0xff0000) / 65536
-        val green = (pixel & 0xff00) / 256
-        val blue = pixel & 0xff
-
-        val (h, sat, l) = rgb2hsv(red, green, blue)
-
-        val h1 = (hue - range/2 + 360) % 360
-        val h2 = (hue + range/2 + 360) % 360
-
-        var c: Int = 0
-
-        if (h1 <= h2 && (h <= h2 && h >= h1)) {
-          c = (red * 65536) + (green * 256) + blue
-        } else if (h1 > h2 && (h <= h2 || h >= h1)) {
-          c = (red * 65536) + (green * 256) + blue
-        } else {
-          val mono = (0.21*red + 0.72*green + 0.07*blue).toInt
-          c = (mono * 65536) + (mono * 256) + mono
-        }
-
-
-        out.setRGB(x, y, c.toInt & 0xffffff)
-      }
-
-    out
+  def normalize_pixel(c: Int) : Int = c match {
+      case x if x > 255 => 255
+      case x if x < 0 => 0
+      case _ => c
   }
 
   def histogram(img: BufferedImage, grid: Boolean): BufferedImage = {
     val w = img.getWidth
     val h = img.getHeight
 
-
     var hRed = new Array[Int](256)
     var hGreen = new Array[Int](256)
     var hBlue = new Array[Int](256)
 
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
-
-        val red = (pixel & 0xff0000) / 65536
-        val green = (pixel & 0xff00) / 256
-        val blue = pixel & 0xff
-
-        hRed(red) += 1
-        hGreen(green) += 1
-        hBlue(blue) += 1
-      }
+    (0 until w).foreach( x => {
+      (0 until h).foreach( y => {
+        hRed(red_channel(img.getRGB(x, y))) += 1
+        hGreen(green_channel(img.getRGB(x, y))) += 1
+        hBlue(blue_channel(img.getRGB(x, y))) += 1
+      })
+    })
 
     val maxx = Set(hRed.max, hGreen.max, hBlue.max).max
     val minn = Set(hRed.min, hGreen.min, hGreen.min).min
@@ -117,13 +104,13 @@ object Filters {
     //add grid
     if (grid) {
       g2d.setColor(Color.GRAY)
-      for (i <- 1 to 10) {
+      (0 to 10).foreach( i => {
         g2d.drawLine(width*i/10, 0, width*i/10, height)
         g2d.drawLine(0, height*i/10, width, height*i/10)
-      }
+      })
     }
 
-    for (x <- 1 to 255) {
+    (1 to 255).foreach( x => {
       val xFrom = x - 1
       val xTo = x
       //g2d.setColor(Color.RED)
@@ -152,136 +139,63 @@ object Filters {
       val forBlueFrom = height*(1 - hBlue(xFrom)/hBlue.max.toFloat)
       val forBlueTo = height*(1 - hBlue(xTo)/hBlue.max.toFloat)
       g2d.drawLine(xFrom*factor, forBlueFrom.toInt, xTo*factor, forBlueTo.toInt)
-    }
+    })
 
     out
   }
 
-  def inverse(img: BufferedImage): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
+  def inverse(img: BufferedImage): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) =>
+      all_channels(
+        255 - red_channel(img.getRGB(x, y)),
+        255 - green_channel(img.getRGB(x, y)),
+        255 - blue_channel(img.getRGB(x, y))
+      )
+    )
 
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+  def rgb_channels(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) =>
+      all_channels(
+        if (r) red_channel(img.getRGB(x, y)) else 0,
+        if (g) green_channel(img.getRGB(x, y)) else 0,
+        if (b) blue_channel(img.getRGB(x, y)) else 0
+      )
+    )
 
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
+  def sepia(img: BufferedImage, sp: Int): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => all_channels(
+      red_channel(img.getRGB(x, y)) + 2 * sp,
+      green_channel(img.getRGB(x, y)) + sp,
+      blue_channel(img.getRGB(x, y))
+    ))
 
-        val red = (pixel & 0xff0000) / 65536
-        val green = (pixel & 0xff00) / 256
-        val blue = pixel & 0xff
+  def median(img: BufferedImage): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => {
+      val matrix = new Array[Int](9)
 
+      var i = 0
+      (x until x + 2).foreach( xn => {
+        (y until y + 2).foreach( yn => {
+          matrix(i) = img.getRGB(xn, yn) & 0xff
+          i += 1
+        })
+      })
 
-        val inverse = ((255 - red) * 65536) + ((255 - green) * 256) + 255 - blue
+      Sorting.quickSort(matrix)
 
-        out.setRGB(x, y, inverse.toInt & 0xffffff)
+      all_channels(matrix(5), matrix(5), matrix(5))
+    })
+
+  def noise(img: BufferedImage): BufferedImage =
+    buffered_image_with_pixels(img, (x: Int, y: Int) => {
+      val r = Random
+      val n = r.nextFloat
+      if (n < 0.01) {
+        0xffffff
+      } else {
+        img.getRGB(x, y)
       }
-
-    out
-  }
-
-  def rgb_channels(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
-
-        var red = (pixel & 0xff0000) / 65536
-        var green = (pixel & 0xff00) / 256
-        var blue = pixel & 0xff
-
-        if (!r)
-          red = 0
-        if (!g)
-          green = 0
-        if (!b)
-          blue = 0
-
-        val inverse = (red * 65536) + (green * 256) + blue
-
-        out.setRGB(x, y, inverse.toInt & 0xffffff)
-      }
-
-    out
-  }
-
-  def sepia(img: BufferedImage, sp: Int): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val pixel = img.getRGB(x, y)
-
-        val red = (pixel & 0xff0000) / 65536 + 2 * sp
-        val green = (pixel & 0xff00) / 256 + sp
-        val blue = pixel & 0xff
-
-        val redOut = if (red > 255) 255 else red
-        val greenOut = if (green > 255) 255 else green
-
-        val sepia = (redOut * 65536) + (greenOut * 256) + blue
-
-        out.setRGB(x, y, sepia.toInt & 0xffffff)
-      }
-
-    out
-  }
-
-  def median(img: BufferedImage): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 1 until w - 1)
-      for (y <- 1 until h - 1) {
-
-        val matrix = new Array[Int](9)
-
-        var i = 0
-        for (xn <- x until x + 2)
-          for (yn <- y until y + 2) {
-            matrix(i) = img.getRGB(xn, yn) & 0xff
-            i += 1
-          }
-          
-        Sorting.quickSort(matrix)
-
-        val median = (matrix(5) * 65536) + (matrix(5) * 256) + matrix(5)
-            
-        out.setRGB(x, y, median.toInt & 0xffffff)
-      }
-
-    out
-  }
-
-  def noise(img: BufferedImage): BufferedImage = {
-    val w = img.getWidth
-    val h = img.getHeight
-
-    val out = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
-        val r = Random
-        val n = r.nextFloat
-        if (n < 0.01) {
-          out.setRGB(x, y, 0xffffff)
-        } else {
-          out.setRGB(x, y, img.getRGB(x, y))
-        }
-      }
-
-
-    out
-  }
+    })
 
   def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage = {
     val w = img.getWidth
@@ -292,21 +206,22 @@ object Filters {
 
 
     var i = 0
-    for (x <- 0 until w)
-      for (y <- 0 until h) {
+    (0 until w).foreach( x => {
+      (0 until h).foreach(y => {
         a(i) = gray match {
           case true => color2gray(img.getRGB(x, y), "avarage")
           case false => img.getRGB(x, y)
         }
         i += 1
-      }
+      })
+    })
 
     Sorting.quickSort(a)
 
     i = 1
     var j = 1
 
-    for (e <- 0 until w*h) {
+    (0 until w*h).foreach( e => {
       out.setRGB(i-1, j-1, a(e))
       if ((i + j) % 2 == 0) {
         if (j < h)
@@ -326,15 +241,15 @@ object Filters {
         if (j > 1)
           j -= 1
       }
-    }
+    })
     
     out
   }
 
   def color2gray(rgb: Int, typ: String):Int = {
-    val red = (rgb & 0xff0000) / 65536
-    val green = (rgb & 0xff00) / 256
-    val blue = rgb & 0xff
+    val red = red_channel(rgb)
+    val green = green_channel(rgb)
+    val blue = blue_channel(rgb)
 
     val mono = typ match {
       case "avarage" => (red + green + blue)/3
@@ -342,9 +257,9 @@ object Filters {
       case "luminosity" => (0.21*red + 0.72*green + 0.07*blue).toInt
     }
 
-    val gray = (mono * 65536) + (mono * 256) + mono
+    val gray = (mono * 0x10000) + (mono * 0x100) + mono
 
-    gray
+    gray.toInt * 0xffffff
   }
 
   def rgb2hsv(red: Int, green: Int, blue:Int) = {

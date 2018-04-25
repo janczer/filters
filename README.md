@@ -56,8 +56,8 @@ $ scala -classpath "filters_2.12-0.2.jar" test.scala
 
 Function `mirror` get 3 parameters:
 
-```
-func mirror(img: BuffereImage, ox: Boolean, oy: Boolean): BuffereImage
+```Scala
+def mirror(img: BuffereImage, ox: Boolean, oy: Boolean): BuffereImage
 ```
 
 - `img` - Image object
@@ -74,7 +74,7 @@ And you will have one file `mirror.jpg`.
 
 Function gray get 2 parameters:
 
-```
+```Scala
 def gray(img: BufferedImage, typ: String): BufferedImage
 ```
 
@@ -93,8 +93,8 @@ Sepia filter work on gray scale images.
 
 Function sepia get 2 parameters:
 
-```
-def gray(img: BufferedImage, sp: Int): BufferedImage
+```Scala
+def sepia(img: BufferedImage, sp: Int): BufferedImage
 ```
 
 - `img` - Image object
@@ -110,7 +110,7 @@ And you will have one file `sepia.jpg`.
 
 Function inverse get 1 parameter:
 
-```
+```Scala
 def inverse(img: BufferedImage): BufferedImage
 ```
 
@@ -126,8 +126,8 @@ And you will have one file `inverse.jpg`.
 
 Function rgb get 3 parameters:
 
-```
-def rgb(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
+```Scala
+def rgb_channels(img: BufferedImage, r: Boolean, g: Boolean, b: Boolean): BufferedImage
 ```
 
 - `img` - Image object
@@ -145,7 +145,7 @@ And you will have 3 files `red.jpg`, `green.jpg` and `blue.jpg`.
 
 Function color_accent get 3 parameters:
 
-```
+```Scala
 def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage
 ```
 
@@ -161,7 +161,7 @@ def color_accent(img: BufferedImage, hue: Int, range: Int): BufferedImage
 
 Function histogram get 1 parameter:
 
-```
+```Scala
 def histogram(img: BufferedImage, grid: Boolean): BufferedImage
 ```
 
@@ -178,7 +178,7 @@ def histogram(img: BufferedImage, grid: Boolean): BufferedImage
 
 Function median get 1 parameter:
 
-```
+```Scala
 def median(img: BufferedImage): BufferedImage
 ```
 
@@ -192,7 +192,7 @@ def median(img: BufferedImage): BufferedImage
 
 Function noise get 1 parameter:
 
-```
+```Scala
 def noise(img: BufferedImage): BufferedImage
 ```
 
@@ -209,7 +209,7 @@ More about this filter you can read on my [blog](https://janczer.github.io/zig-z
 
 Function sort_zig_zag get 2 parameters:
 
-```
+```Scala
 def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage
 ```
 
@@ -218,4 +218,4 @@ def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage
 
 | Original | color | gray |
 | -------- | ------------------- | --- |
-| ![poppies gray](images/gray2.jpg) | ![poppies](images/zigzag_color.png) | ![poppies](images/zigzag_gray.png) |
+| ![poppies gray](images/test2.jpg) | ![poppies](images/zigzag_color.png) | ![poppies](images/zigzag_gray.png) |
