@@ -6,3 +6,4 @@ jdk: oraclejdk8
 
 script:
     - sbt ++$TRAVIS_SCALA_VERSION compile
+    - sbt clean test

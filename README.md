@@ -219,3 +219,19 @@ def sort_zig_zag(img: BufferedImage, gray: Boolean): BufferedImage
 | Original | color | gray |
 | -------- | ------------------- | --- |
 | ![poppies gray](images/test2.jpg) | ![poppies](images/zigzag_color.png) | ![poppies](images/zigzag_gray.png) |
+
+
+## Test
+
+To run test:
+
+```
+$ sbt clean test
+```
+
+To get coverage report:
+
+```
+$ sbt clean coverage test && sbt coverageReport
+```
+

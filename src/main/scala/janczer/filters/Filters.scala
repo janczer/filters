@@ -24,7 +24,7 @@ object Filters {
     buffered_image_with_pixels(img, (x: Int, y: Int) => {
       val pixel = img.getRGB(x, y)
 
-      val (h, sat, l) = rgb2hsv_pixel(pixel)
+      val (h, _, _) = rgb2hsv_pixel(pixel)
 
       val (h1, h2) = {
         (360 - range/2, range/2)
@@ -33,7 +33,7 @@ object Filters {
       val h_normal = (h - hue + 360) % 360
 
       if (h_normal >= h2 && h_normal <= h1) {
-        mono_color(pixel)
+        color2gray(pixel, "luminosity")
       } else {
         pixel
       }
@@ -56,15 +56,11 @@ object Filters {
   def rgb2hsv_pixel(pixel: Int): (Float, Float, Float) = rgb2hsv(red_channel(pixel), green_channel(pixel), blue_channel(pixel))
   def red_channel(pixel: Int): Int = (pixel & 0xff0000) / 0x10000
   def green_channel(pixel: Int): Int = (pixel & 0xff00) / 0x100
-  def blue_channel(pixel: Int): Int = (pixel & 0xff)
+  def blue_channel(pixel: Int): Int = pixel & 0xff
   def all_channels(red: Int, green: Int, blue: Int) : Int =
     ((normalize_pixel(red) * 0x10000) +
       (normalize_pixel(green) * 0x100) +
       normalize_pixel(blue)).toInt & 0xffffff
-  def mono_color(pixel: Int) : Int = {
-    val mono = (0.21 * red_channel(pixel) + 0.72 * green_channel(pixel) + 0.07 * blue_channel(pixel)).toInt
-    (mono * 0x10000) + (mono * 0x100) + mono
-  }
   def normalize_pixel(c: Int) : Int = c match {
       case x if x > 255 => 255
       case x if x < 0 => 0
@@ -95,7 +91,7 @@ object Filters {
     val width = 256*factor
 
     val out = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-    val g2d = out.createGraphics();
+    val g2d = out.createGraphics()
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON)
     g2d.setBackground(Color.WHITE)
@@ -208,13 +204,12 @@ object Filters {
     var i = 0
     (0 until w).foreach( x => {
       (0 until h).foreach(y => {
-        a(i) = gray match {
-          case true => color2gray(img.getRGB(x, y), "avarage")
-          case false => img.getRGB(x, y)
-        }
+        a(i) = img.getRGB(x, y)
         i += 1
       })
     })
+
+    a = a.map((x) => if (gray) color2gray(x, "average") else x)
 
     Sorting.quickSort(a)
 
@@ -252,17 +247,15 @@ object Filters {
     val blue = blue_channel(rgb)
 
     val mono = typ match {
-      case "avarage" => (red + green + blue)/3
+      case "average" => (red + green + blue)/3
       case "lightness" => (Set(red, green, blue).max  + Set(red, green, blue).min)/2
       case "luminosity" => (0.21*red + 0.72*green + 0.07*blue).toInt
     }
 
-    val gray = (mono * 0x10000) + (mono * 0x100) + mono
-
-    gray.toInt * 0xffffff
+    all_channels(mono, mono, mono)
   }
 
-  def rgb2hsv(red: Int, green: Int, blue:Int) = {
+  def rgb2hsv(red: Int, green: Int, blue:Int): (Float, Float, Float) = {
     val r = red / 255f
     val g = green / 255f
     val b = blue / 255f
@@ -279,8 +272,8 @@ object Filters {
     } else {
       val h = max match {
         case `r` => (g - b) / d + (if (g < b) 6 else 0)
-        case `g` => (b - r) / d + 2;
-        case `b` => (r - g) / d + 4;
+        case `g` => (b - r) / d + 2
+        case `b` => (r - g) / d + 4
       }
       h / 6f
     }
